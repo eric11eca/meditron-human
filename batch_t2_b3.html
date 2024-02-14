@@ -10,91 +10,84 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
 
-<div id="app">
-    <div class="samples">
-        <sample-item v-for="sample in samples" :key="sample.id" :sample="sample"></sample-item>
-    </div>
-</div>
-
+<body>
+    <div id="app"></div>
+</body>
 <script>
-    Vue.createApp({
-        data() {
-          return {
-            samples: []
-          };
-        },
-        mounted() {
-          fetch('/static/batch3.json') // Adjust the path to your JSON file
-            .then(response => response.json())
-            .then(data => {
-              this.samples = data;
-            });
-        }
-      }).component('sample-item', {
-        props: ['sample'],
-        template: `
-        <div class="container text-center px-1">
-            <div class="row gx-2">
-            <div class="col-12">
-                <div class="sample">
+    document.addEventListener('DOMContentLoaded', function() {
+      const appContainer = document.getElementById('app');
 
-                <!-- User -->
-                <div class="row padding-0 mb-5">
-                    <!-- Question ext -->
-                    <div class="col-11">
+      fetch('static/batch3.json') // Adjust the path to your JSON file
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(sample => {
+            const sampleItemHtml = `
+            <div class="container text-center px-1">
+                <div class="row gx-2">
+                <div class="col-12">
+                    <div class="sample">
 
-                    <div class="sample-question rounded">
-                        <div class="row">
-                        <div class="col-2">
-                            <div class="sample-user-logo rounded">
-                            <span style="font-size: medium;margin-left: 10%;">
-                                <strong style="color: rgb(104, 97, 223);"><i class="fa-solid fa-user"></i></strong>
-                            </span>
-                            <span style="font-size: medium;margin-left: 10%;">
-                                <strong style="color: rgb(104, 97, 223);">USER</strong>
-                            </span>
+                    <!-- User -->
+                    <div class="row padding-0 mb-5">
+                        <!-- Question text -->
+                        <div class="col-11">
+
+                        <div class="sample-question rounded">
+                            <div class="row">
+                            <div class="col-2">
+                                <div class="sample-user-logo rounded">
+                                <span style="font-size: medium;margin-left: 10%;">
+                                    <strong style="color: rgb(104, 97, 223);"><i class="fa-solid fa-user"></i></strong>
+                                </span>
+                                <span style="font-size: medium;margin-left: 10%;">
+                                    <strong style="color: rgb(104, 97, 223);">USER</strong>
+                                </span>
+                                </div>
                             </div>
+                            <div class="col-10">
+                                <div class="sample-question-text">
+                                <strong style="color: white;"> ${sample.prompt} </strong>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <!-- Id -->
+                        <div class="col-1">
+                        <div class="rounded sample-id">
+                            <strong style="color: white;">${sample.index}</strong>
+                        </div>
+                        </div>
+
+                    </div>
+
+                    <div class="sample-answer rounded" style="padding-top: 2%; padding-bottom: 3%;">
+                    <div class="row">
+                        <div class="col-2">
+                        <div class="sample-user-logo rounded">
+                            <span style="font-size: medium;margin-left:0;">
+                                <strong style="color: rgb(104, 97, 223);"><i class="fa-solid fa-robot"></i></strong>
+                            </span>
+                            <span style="font-size: medium;margin-left: 10%;">
+                            <strong style="color: rgb(104, 97, 223);">MEDITRON</strong>
+                            </span>
+                        </div>
                         </div>
                         <div class="col-10">
-                            <div class="sample-question-text">
-                            <strong style="color: white;"> {{ sample.prompt }} </strong>
-                            </div>
+                        <div class="sample-answer-text" style="padding-top: 2%;">
+                          <md-block>${sample.output2}</md-block>
                         </div>
                         </div>
-                    </div>
-                    </div>
-
-                    <!-- Id -->
-                    <div class="col-1">
-                    <div class="rounded sample-id">
-                        <strong style="color: white;">{{ sample.index }}</strong>
-                    </div>
-                    </div>
-
-                </div>
-
-                <div class="sample-answer rounded" style="padding-top: 2%; padding-bottom: 3%;">
-                <div class="row">
-                    <div class="col-2">
-                    <div class="sample-user-logo rounded">
-                        <span style="font-size: medium;margin-left:0;">
-                            <strong style="color: rgb(104, 97, 223);"><i class="fa-solid fa-robot"></i></strong>
-                        </span>
-                        <span style="font-size: medium;margin-left: 10%;">
-                        <strong style="color: rgb(104, 97, 223);">MEDITRON</strong>
-                        </span>
-                    </div>
-                    </div>
-                    <div class="col-10">
-                    <div class="sample-asnwer-text">
-                        <md-block>{{ sample.output2 }}</md-block>
-                    </div>
-                    </div>
+                        </div>
                     </div>
                 </div>
+                </div>
             </div>
-            </div>
-        </div>
-        `
-      }).mount('#app');
-</script>
+            `;
+
+            appContainer.insertAdjacentHTML('beforeend', sampleItemHtml);
+          });
+        });
+    });
+  </script>
